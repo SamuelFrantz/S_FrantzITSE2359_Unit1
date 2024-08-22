@@ -1,29 +1,30 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <string>
 using namespace std;
 
 int main() {
     const int numStudents = 53;
 
-    string names[numStudents] = {"John", "Jane", "Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Hank",
-                                 "Ivy", "Jack", "Karen", "Leo", "Mona", "Nina", "Oscar", "Paul", "Quinn", "Rita",
-                                 "Sam", "Tina", "Uma", "Vince", "Walt", "Xena", "Yara", "Zane", "Amy", "Ben",
-                                 "Cindy", "Derek", "Elena", "Fred", "Gina", "Hugo", "Isla", "Jake", "Lara", "Mike",
-                                 "Nora", "Omar", "Pia", "Quinn", "Ralph", "Sara", "Troy", "Una", "Vera", "Will",
-                                 "Xander", "Yvonne", "Zack"};
-    
-    int ages[numStudents] = {20, 22, 19, 21, 23, 20, 22, 24, 21, 22,
-                             20, 23, 19, 22, 21, 20, 23, 24, 22, 21,
-                             20, 23, 24, 21, 22, 20, 23, 24, 21, 22,
-                             20, 23, 24, 21, 22, 23, 24, 21, 22, 20,
-                             23, 24, 21, 22, 23, 24, 21, 22, 23};
-    
-    double gpas[numStudents] = {3.5, 3.8, 3.7, 3.2, 3.9, 3.6, 3.4, 3.1, 3.7, 3.3,
-                                3.8, 3.5, 3.9, 3.6, 3.4, 3.7, 3.8, 3.2, 3.9, 3.6,
-                                3.4, 3.7, 3.5, 3.3, 3.8, 3.9, 3.7, 3.5, 3.6, 3.9,
-                                3.4, 3.7, 3.8, 3.6, 3.3, 3.9, 3.7, 3.4, 3.5, 3.2,
-                                3.3, 3.9, 3.7, 3.5, 3.8, 3.6, 3.9, 3.8, 3.6, 3.9,
-                                3.3, 3.7, 3.9};
+    string names[numStudents];
+    int ages[numStudents];
+    double gpas[numStudents];
+
+    ifstream infile("arr_data.txt");
+    if (!infile) {
+        cerr << "Error opening file!" << endl;
+        return 1;
+    }
+
+    string line;
+    int i = 0;
+    while (getline(infile, line) && i < numStudents) {
+        istringstream iss(line);
+        iss >> names[i] >> ages[i] >> gpas[i];
+        i++;
+    }
+    infile.close();
 
     // Calculate average GPA
     double sumGPA = 0;
@@ -90,7 +91,7 @@ int main() {
             firstYoungest = false;
         }
     }
-    cout << " (" << (youngestAge == 0 ? 19 : youngestAge) << " years)" << endl;
+    cout << " (" << youngestAge << " years)" << endl;
 
     return 0;
 }
